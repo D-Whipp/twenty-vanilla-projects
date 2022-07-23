@@ -2,7 +2,7 @@ const form = document.querySelector('#form');
 const username = document.querySelector('#username');
 const email = document.querySelector('#email');
 const password = document.querySelector('#password');
-const confirmPW = document.querySelector('#confirmPW');
+const confirmPW = document.querySelector('#confirm-password');
 
 // Show input error message
 function showError(input, message) {
@@ -27,33 +27,25 @@ function isValidEmail(email) {
     );
 }
 
+// Check required fields
+function checkRequired(inputArr) {
+  inputArr.forEach(function (input) {
+    if (input.value.trim() === '') {
+      showError(input, `${GetFieldName(input)} is required`);
+    } else {
+      showSuccess(input);
+    }
+  });
+}
+
+// Get fieldName
+function GetFieldName(input) {
+  return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+}
+
 // Event listeners
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  if (username.value === '') {
-    showError(username, 'Username is required');
-  } else {
-    showSuccess(username);
-  }
-
-  if (email.value === '') {
-    showError(email, 'Email is required');
-  } else if (!isValidEmail(email.value)) {
-    showError(email, 'Invalid email');
-  } else {
-    showSuccess(email);
-  }
-
-  if (password.value === '') {
-    showError(password, 'Password is required');
-  } else {
-    showSuccess(password);
-  }
-
-  if (confirmPW.value === '') {
-    showError(confirmPW, 'Confirm your password');
-  } else {
-    showSuccess(confirmPW);
-  }
+  checkRequired([username, email, password, confirmPW]);
 });
